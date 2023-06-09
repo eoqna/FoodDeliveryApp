@@ -9,6 +9,7 @@ import SignIn from './src/pages/SignIn';
 import SignUp from './src/pages/SignUp';
 import { useSelector } from 'react-redux';
 import { RootState } from './src/store/reducer';
+import useSocket from './src/hooks/useSocket';
 
 export type LoggedInParamList = {
   Orders: undefined;
@@ -27,6 +28,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function AppInner() {
   const isLoggedIn = useSelector(((state: RootState) => !!state.user.email));
+  const [socket, disconnect] = useSocket();
 
   return (
     <NavigationContainer>
