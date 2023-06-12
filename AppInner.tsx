@@ -10,6 +10,7 @@ import SignUp from './src/pages/SignUp';
 import { useSelector } from 'react-redux';
 import { RootState } from './src/store/reducer';
 import useSocket from './src/hooks/useSocket';
+import { useEffect } from 'react';
 
 export type LoggedInParamList = {
   Orders: undefined;
@@ -29,6 +30,34 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function AppInner() {
   const isLoggedIn = useSelector(((state: RootState) => !!state.user.email));
   const [socket, disconnect] = useSocket();
+
+  // 키 : 값
+  // 'hello' : 'world'
+  // 'userInfo', { name: 'zerocho', birth: 1994 }
+  // 'order', { orderId: '1312s', price: '9000', latitude: 37.5, longitude: 127.5 }
+
+  useEffect(() => {
+    const helloCallback = (data: any) => {
+      console.log(data);
+    };
+    if (socket && isLoggedIn) {
+      console.log(socket);
+      socket.emit('login', 'hello');
+      socket.on('hello', helloCallback);
+    }
+    return () => {
+      if (socket) {
+        socket.off('hello', helloCallback);
+      }
+    };
+  }, [isLoggedIn, socket]);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      console.log('!isLoggedIn', !isLoggedIn);
+      disconnect();
+    }
+  }, [isLoggedIn, disconnect]);
 
   return (
     <NavigationContainer>
