@@ -92,9 +92,9 @@ function AppInner() {
           }),
         );
       } catch (error) {
-        const errorResponse = (error as AxiosError).response;
+        let errorResponse = (error as AxiosError);
 
-        if (errorResponse?.data === 'expired') {
+        if (errorResponse?.code === 'expired') {
           Alert.alert('알림', '다시 로그인 해주세요.');
         }
       } finally {
@@ -103,6 +103,39 @@ function AppInner() {
     };
     getTokenAndRefresh();
   }, [dispatch]);
+
+  useEffect(() => {
+    axios.interceptors.response.use(
+      response => {
+        return response;
+      },
+      async error => {
+        const {
+          config,
+          response: {status},
+        } = error;
+        if (status === 419) {
+          if (error.response.data.code === 'expired') {
+            const originalRequest = config;
+            const refreshToken = await EncryptedStorage.getItem('refreshToken');
+            // token refresh 요청
+            const {data} = await axios.post(
+              `${Config.API_URL}/refreshToken`, // token refresh api
+              {},
+              {headers: {authorization: `Bearer ${refreshToken}`}},
+            );
+            // 새로운 토큰 저장
+            dispatch(userSlice.actions.setAccessToken(data.data.accessToken));
+            originalRequest.headers.authorization = `Bearer ${data.data.accessToken}`;
+            // 419로 요청 실패했던 요청 새로운 토큰으로 재요청
+            return axios(originalRequest);
+          }
+        }
+        return Promise.reject(error);
+      },
+    );
+  }, [dispatch]);
+
 
   return (
     <NavigationContainer>

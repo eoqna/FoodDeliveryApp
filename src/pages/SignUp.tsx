@@ -88,12 +88,12 @@ function SignUp({navigation}: SignUpScreenProps) {
       Alert.alert('알림', '회원가입 되었습니다.');
       
     } catch (error) {
-      const errorResponse = (error as AxiosError).response;
+      const errorResponse = (error as AxiosError);
       
       console.error(errorResponse);
 
       if(errorResponse) {
-        Alert.alert('알림', errorResponse.data.message); 
+        Alert.alert('알림', errorResponse?.message); 
       }
       
     } finally {

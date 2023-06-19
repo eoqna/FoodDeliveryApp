@@ -63,9 +63,10 @@ function SignIn({navigation}: SignInScreenProps) {
         response.data.data.refreshToken,
       );
     } catch (error) {
-      const errorResponse = (error as AxiosError).response;
+      let errorResponse = (error as AxiosError);
+
       if (errorResponse) {
-        Alert.alert('알림', errorResponse.data.message);
+        Alert.alert('알림', errorResponse?.message);
       }
     } finally {
       setLoading(false);
