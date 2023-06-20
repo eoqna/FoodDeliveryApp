@@ -9,7 +9,6 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {LoggedInParamList} from '../../AppInner';
 import orderSlice, { Order } from '../slices/order';
 import { Alert, Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
-import NaverMapView, { Marker, Path } from 'react-native-nmap';
 
 interface Props {
   item: Order;
@@ -74,8 +73,9 @@ function EachOrder({item}: Props) {
               width: Dimensions.get('window').width - 30,
               height: 200,
               marginTop: 10,
+              backgroundColor: 'white',
             }}>
-            <NaverMapView
+            {/* <NaverMapView
               style={{width: '100%', height: '100%'}}
               zoomControl={false}
               center={{
@@ -103,7 +103,7 @@ function EachOrder({item}: Props) {
               <Marker
                 coordinate={{latitude: end.latitude, longitude: end.longitude}}
               />
-            </NaverMapView>
+            </NaverMapView> */}
           </View>
           <View style={styles.buttonWrapper}>
             <Pressable onPress={onAccept} style={styles.acceptButton}>
