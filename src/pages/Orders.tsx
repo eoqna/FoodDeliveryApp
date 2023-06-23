@@ -1,8 +1,8 @@
-import React, { useCallback } from 'react';
-import { View, FlatList } from 'react-native';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store/reducer';
-import { Order } from '../slices/order';
+import React, {useCallback} from 'react';
+import {FlatList, View} from 'react-native';
+import {Order} from '../slices/order';
+import {useSelector} from 'react-redux';
+import {RootState} from '../store/reducer';
 import EachOrder from '../components/EachOrder';
 
 function Orders() {

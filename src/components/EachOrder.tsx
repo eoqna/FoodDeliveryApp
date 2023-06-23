@@ -1,14 +1,22 @@
-import React, { useCallback, useState } from 'react';
+import {
+  Alert,
+  Dimensions,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import React, {useCallback, useState} from 'react';
+import orderSlice, {Order} from '../slices/order';
 import {useAppDispatch} from '../store';
 import getDistanceFromLatLonInKm from '../util';
-import axios, { AxiosError } from 'axios';
+import axios, {AxiosError} from 'axios';
 import {useSelector} from 'react-redux';
 import {RootState} from '../store/reducer';
 import Config from 'react-native-config';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {LoggedInParamList} from '../../AppInner';
-import orderSlice, { Order } from '../slices/order';
-import { Alert, Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
+import NaverMapView, {Marker, Path} from 'react-native-nmap';
 
 interface Props {
   item: Order;
@@ -17,8 +25,7 @@ function EachOrder({item}: Props) {
   const navigation = useNavigation<NavigationProp<LoggedInParamList>>();
   const dispatch = useAppDispatch();
   const accessToken = useSelector((state: RootState) => state.user.accessToken);
-  const [ detail, showDetail ] = useState(false);
-  const { start, end } = item;
+  const [detail, showDetail] = useState(false);
 
   const onAccept = useCallback(async () => {
     if (!accessToken) {
@@ -33,10 +40,10 @@ function EachOrder({item}: Props) {
       dispatch(orderSlice.actions.acceptOrder(item.orderId));
       navigation.navigate('Delivery');
     } catch (error) {
-      let errorResponse = (error as AxiosError);
+      let errorResponse = (error as AxiosError).response;
       if (errorResponse?.status === 400) {
         // 타인이 이미 수락한 경우
-        Alert.alert('알림', errorResponse?.message);
+        Alert.alert('알림', errorResponse.data.message);
         dispatch(orderSlice.actions.rejectOrder(item.orderId));
       }
     }
@@ -45,6 +52,7 @@ function EachOrder({item}: Props) {
   const onReject = useCallback(() => {
     dispatch(orderSlice.actions.rejectOrder(item.orderId));
   }, [dispatch, item]);
+  const {start, end} = item;
 
   const toggleDetail = useCallback(() => {
     showDetail(prevState => !prevState);
@@ -73,16 +81,15 @@ function EachOrder({item}: Props) {
               width: Dimensions.get('window').width - 30,
               height: 200,
               marginTop: 10,
-              backgroundColor: 'white',
             }}>
-            {/* <NaverMapView
+            <NaverMapView
               style={{width: '100%', height: '100%'}}
               zoomControl={false}
               center={{
                 zoom: 10,
                 tilt: 50,
                 latitude: (start.latitude + end.latitude) / 2,
-                longitude: (start.longitude + end.longitude) / 2,   
+                longitude: (start.longitude + end.longitude) / 2,
               }}>
               <Marker
                 coordinate={{
@@ -103,7 +110,7 @@ function EachOrder({item}: Props) {
               <Marker
                 coordinate={{latitude: end.latitude, longitude: end.longitude}}
               />
-            </NaverMapView> */}
+            </NaverMapView>
           </View>
           <View style={styles.buttonWrapper}>
             <Pressable onPress={onAccept} style={styles.acceptButton}>
@@ -131,6 +138,7 @@ const styles = StyleSheet.create({
   },
   eachInfo: {
     flex: 1,
+    color: 'black',
   },
   buttonWrapper: {
     flexDirection: 'row',

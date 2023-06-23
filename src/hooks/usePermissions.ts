@@ -1,6 +1,6 @@
-import { useEffect } from "react";
-import { Alert, Linking, Platform } from "react-native";
-import { check, PERMISSIONS, request, RESULTS } from "react-native-permissions";
+import {useEffect} from 'react';
+import {Alert, Linking, Platform} from 'react-native';
+import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
 
 function usePermissions() {
   // 권한 관련
@@ -9,9 +9,7 @@ function usePermissions() {
       check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION)
         .then(result => {
           console.log('check location', result);
-          if (result === RESULTS.DENIED) {
-            return request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
-          } else if (result === RESULTS.BLOCKED) {
+          if (result === RESULTS.BLOCKED || result === RESULTS.DENIED) {
             Alert.alert(
               '이 앱은 위치 권한 허용이 필요합니다.',
               '앱 설정 화면을 열어서 항상 허용으로 바꿔주세요.',
@@ -64,7 +62,7 @@ function usePermissions() {
           }
         })
         .catch(console.error);
-    } else if(Platform.OS === 'ios') {
+    } else {
       check(PERMISSIONS.IOS.CAMERA)
         .then(result => {
           if (

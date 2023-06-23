@@ -609,14 +609,14 @@ Podfile
 npx pod-install # ios 전용
 ```
 
-- 안드로이드 앱 패키지 이름: com.[원하는이름].fooddeliveryapp (ex: com.zerocho.fooddeliveryapp)
-- [커밋 참조](https://github.com/ZeroCho/food-delivery-app/commit/36295cabf2cdab4ed68fa3b907c7b467101a02a5) (폴더 등 변경할 게 많음)
+- 안드로이드 앱 패키지 이름: com.[원하는이름].fooddeliveryapp (ex: com.Eoqna.fooddeliveryapp)
+- [커밋 참조](https://github.com/Eoqna/food-delivery-app/commit/36295cabf2cdab4ed68fa3b907c7b467101a02a5) (폴더 등 변경할 게 많음)
 *0.68 버전 이상부터는*
 [링크](https://www.inflearn.com/questions/583155) 참고해서 newarchitecture 부분의 이름도 수정해야 합니다.
 
 
 - [ios]Xcode로는 xcworkspace 파일을 열어야함(xcodeproj 열면 안됨, xcworkspace가 없다면 ios 폴더에서 pod install 한 번 입력해볼 것)
-- [ios]iOS Bundle ID: com.[원하는이름].fooddeliveryapp(ex: com.zerocho.fooddeliveryapp)로 수정
+- [ios]iOS Bundle ID: com.[원하는이름].fooddeliveryapp(ex: com.Eoqna.fooddeliveryapp)로 수정
 - [ios]실제 기기에서 네이버 지도 하는 법 [링크](https://www.inflearn.com/questions/605689)
 
 src/components/EachOrder.tsx
@@ -842,9 +842,9 @@ npx patch-package react-native-image-crop-picker
 - [안드로이드 연동](http://tmapapi.sktelecom.com/main.html#android/guide/androidGuide.sample1)
 - [ios][iOS 연동](http://tmapapi.sktelecom.com/main.html#ios/guide/iosGuide.sample1)
 - [ios]iOS 연동시 Header 파일들이 project.pbxproj에 등록되었나 확인(다른 것도 당연히)
-- android/app/src/java/com/zerocho/fooddeliveryapp/TMapModule.java 생성
-- android/app/src/java/com/zerocho/fooddeliveryapp/TMapPackage.java 생성
-- android/app/src/java/com/zerocho/fooddeliveryapp/MainApplication에 TMapPackage 연결
+- android/app/src/java/com/Eoqna/fooddeliveryapp/TMapModule.java 생성
+- android/app/src/java/com/Eoqna/fooddeliveryapp/TMapPackage.java 생성
+- android/app/src/java/com/Eoqna/fooddeliveryapp/MainApplication에 TMapPackage 연결
 - [ios]ios/FoodDeliveryApp/RCTTMap.h
 - [ios]ios/FoodDeliveryApp/RCTTMap.m
 - [ios]ios/FoodDeliveryApp-Bridging-Header.h

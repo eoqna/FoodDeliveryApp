@@ -3,7 +3,6 @@ import {
   Alert,
   Dimensions,
   Image,
-  Platform,
   Pressable,
   StyleSheet,
   Text,
@@ -34,13 +33,13 @@ function Complete() {
   const [preview, setPreview] = useState<{uri: string}>();
   const accessToken = useSelector((state: RootState) => state.user.accessToken);
 
-  const onResponse = useCallback(async (response: any) => {
+  const onResponse = useCallback(async response => {
     console.log(response.width, response.height, response.exif);
     setPreview({uri: `data:${response.mime};base64,${response.data}`});
     const orientation = (response.exif as any)?.Orientation;
     console.log('orientation', orientation);
     return ImageResizer.createResizedImage(
-      response.path, // 파일의 경로 file://안드로이드 경로
+      response.path,
       600,
       600,
       response.mime.includes('jpeg') ? 'JPEG' : 'PNG',
@@ -88,15 +87,8 @@ function Complete() {
       return;
     }
     const formData = new FormData();
+    formData.append('image', image);
     formData.append('orderId', orderId);
-    formData.append('image', {
-      name: image.name,
-      type: image.type,
-      uri:
-        Platform.OS === 'android'
-          ? image.uri
-          : image.uri.replace('file://', ''),
-    });
     try {
       await axios.post(`${Config.API_URL}/complete`, formData, {
         headers: {
@@ -108,9 +100,9 @@ function Complete() {
       navigation.navigate('Settings');
       dispatch(orderSlice.actions.rejectOrder(orderId));
     } catch (error) {
-      const errorResponse = (error as AxiosError);
+      const errorResponse = (error as AxiosError).response;
       if (errorResponse) {
-        Alert.alert('알림', errorResponse?.message);
+        Alert.alert('알림', errorResponse.data.message);
       }
     }
   }, [dispatch, navigation, image, orderId, accessToken]);
@@ -118,7 +110,7 @@ function Complete() {
   return (
     <View>
       <View style={styles.orderId}>
-        <Text>주문번호: {orderId}</Text>
+        <Text style={{color: 'black'}}>주문번호: {orderId}</Text>
       </View>
       <View style={styles.preview}>
         {preview && <Image style={styles.previewImage} source={preview} />}

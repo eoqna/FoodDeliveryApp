@@ -15,7 +15,7 @@ public class TMapModule extends ReactContextBaseJavaModule {
         super(context);
         // 모듈 로딩 시 실행되는 부분
         TMapTapi tMapTapi = new TMapTapi(context);
-        tMapTapi.setSKTMapAuthentication("gfrmH0Z3s1KFI9aUKDOcat3LoG3ezQT8SZUE6Yu3"); // 여기에 여러분의 키 넣을 것
+        tMapTapi.setSKTMapAuthentication("l7xx3fcf34960c684fb4ad18e23c7342c415"); // 여기에 여러분의 키 넣을 것
     }
 
     @NotNull
